@@ -19,7 +19,7 @@ module hexEncode(input [3:0] sw, output reg [7:0] D1_seg, D0_seg, output [3:0] D
             4'b1111 : D1_seg = 8'b11111001; // -1
         endcase
         casez(sw)
-            4'b1zzz : D0_seg = 8'b11011111; // negative
+            4'b1zzz : D0_seg = 8'b10111111; // negative
             4'b0zzz : D0_seg = 8'b11111111; // positive
         endcase
     end
