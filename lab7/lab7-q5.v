@@ -1,4 +1,4 @@
-module hexEncode(input [3:0] sw, output reg [7:0] D1_seg, D0_seg, output [3:0] D1_a, D0_a);
+module signedDisplay(input [3:0] sw, output reg [7:0] D1_seg, D0_seg, output [3:0] D1_a, D0_a);
     always @(sw) begin
         case(sw)
             4'b0000 : D1_seg = 8'b11000000; // 0
