@@ -1,0 +1,19 @@
+module test_latch ;
+reg C , D ;
+wire Q ;
+D_latch l (. C(C ) , .D(D ) , . Q(Q) );
+always #10 C = ~C ;
+initial begin
+ $dumpfile (" dump . vcd ") ; $dumpvars ;
+ $monitor ("%6d: C=%b, D=%b, Q=%b", $time , C , D , Q) ;
+ C = 0;
+ #5 D = 0; #20 D = 1; #10 D = 0; #10 D = 1;
+ #6 D = 0; #2 D = 1; #3 D = 0; #3 D = 1; #3 D = 0;
+ #29 $finish ;
+ end
+ endmodule
+
+ module D_latch ( input C , D , output reg Q) ;
+ always @ (*)
+ if (C ) Q = D ;
+ endmodule
