@@ -1,0 +1,3 @@
+Provided that each gate has a delay of 1 timeunit, Q will latch to D
+in three time units if the clock is high, but if the clock is low, Q
+will latch in four time units
