@@ -20,10 +20,10 @@ endmodule
 
 module ff(input c, d, output q, qn);
     wire n1, n2, n3, n4;
-    nand #2 (n1, n4, n2);
-    nand #2 (n2, n1, c);
-    nand #2 (n3, c, n2, n4);
-    nand #2 (n4, d, n3);
-    nand #2 (q, n2, qn);
-    nand #2 (qn, q, n3);
+    nand #1 (n1, n4, n2);
+    nand #1 (n2, n1, c);
+    nand #1 (n3, c, n2, n4);
+    nand #1 (n4, d, n3);
+    nand #1 (q, n2, qn);
+    nand #1 (qn, q, n3);
 endmodule
