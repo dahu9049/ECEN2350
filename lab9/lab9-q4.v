@@ -5,15 +5,13 @@
 module adder16(
 input [15:0] sw,
 input [3:0] btn,
-output [15:0] led
+output reg [15:0] led
 );
     reg [15:0] operand_a;
     reg [15:0] operand_b;
-    reg [15:0] led_reg;
     always @ (*) begin
         if(btn[0]) operand_a <= sw;
         if(btn[1]) operand_b <= sw;
-        led_reg <= operand_a + operand_b;
+        led <= operand_a + operand_b;
     end
-    assign led = led_reg;
 endmodule
