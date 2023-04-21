@@ -6,6 +6,7 @@ module ClkHexScroll(
 );
 reg [26:0] count = 0;
 reg [2:0] digitSelect = 0;
+
 wire [7:0] seg0, seg1, seg2, seg3;
 hexEncode he0(sw[3:0], seg0);     
 hexEncode he1(sw[7:4], seg1);     
