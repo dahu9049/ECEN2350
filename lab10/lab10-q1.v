@@ -1,25 +1,15 @@
-module ClkDivider (
-    input mclk, rst,
-    output reg mclk_div
-    );
-	
-localparam terminalcount = 50000000;
-reg [15:0] count;
-wire tc;
-
-assign tc = (count == terminalcount);	// Place a comparator on the counter output
-
-always @ (posedge(mclk), posedge(rst))
-begin
-    if (rst) count <= 0;
-    else if (tc) count <= 0;		// Reset counter when terminal count reached
-    else count <= count + 1;
+module ClkDivider(
+input mclk,
+output led [15:0];
+);
+reg [26:0] count = 0;
+always @(posedge mclk) begin
+if(count == 100000000 - 1) begin
+    count <= 0;
+    led <= -led
 end
-
-always @ (posedge(mclk), posedge(rst))
-begin
-    if (rst) mclk_div <= 0;
-    else if (tc) mclk_div = !mclk_div;	// T-FF with tc as input signal
+    else begin
+        count <= count + 1;
+    end
 end
 endmodule
-
