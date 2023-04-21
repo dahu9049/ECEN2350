@@ -1,6 +1,6 @@
 module ClkDivider(
 input mclk,
-output led [15:0];
+output led [15:0]
 );
 reg [26:0] count = 0;
 always @(posedge mclk) begin
