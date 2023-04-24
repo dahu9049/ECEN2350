@@ -7,16 +7,23 @@ module msStopwatch(
 reg [26:0] count = 0;
 reg [2:0] digitSelect = 0;
 reg [3:0] digit0, digit1, digit2, digit3;
-reg start = 1;
+reg stop = 0;
 
 wire [7:0] seg0, seg1, seg2, seg3;
-binEncode be0(digit0, seg0); 
+binEncode be0(digit0, seg0);     
 binEncode be1(digit1, seg1);     
 binEncode be2(digit2, seg2);     
-binEncode be3(digit3, seg3);
+binEncode be3(digit3, seg3); 
 
-always @(posedge mclk) begin //multiplexor
-    if(count == 100000 - 1) begin
+always @(posedge btn[0]) begin //RESET
+        digit0 <= 0;
+        digit1 <= 0;
+        digit2 <= 0;
+        digit3 <= 0;
+end
+always @(posedge mclk) begin //STOP
+    if(btn[1] == 0) stop = ~stop;
+    if(stop == 1) begin
         digitSelect <= digitSelect + 1;
         case(digitSelect)
             2'b00 : begin
@@ -39,21 +46,11 @@ always @(posedge mclk) begin //multiplexor
         endcase
     end
 end
+    always @(posedge mclk) begin //COUNTER
+    if((count == 100000 - 1) & (stop == 0)) begin
+        count <= 0;
+        digitSelect <= digitSelect + 1;
 
-always@(posedge mclk or posedge btn[1]) begin //counter and pause
-    if(count == 100000 - 1) count <= 0;
-    else count <= count + 1;
-    if(!btn[1]) start <= ~start;
-end
-
-always@(posedge mclk or posedge btn[0]) begin //actual numbers increment 
-    if(btn[0]) begin
-        digit0 <= 0;
-        digit1 <= 0;
-        digit2 <= 0;
-        digit3 <= 0;
-    end
-    else if((start) & (count == 100000 - 1)) begin
         digit0 <= digit0 + 1;
         if(digit0 == 10) begin
             digit0 <= 0;
@@ -68,9 +65,31 @@ always@(posedge mclk or posedge btn[0]) begin //actual numbers increment
             digit3 <= digit3 + 1;
         end
         if(digit3 == 10) digit3 <= 0;
-    end
-end
 
+        case(digitSelect)
+            2'b00 : begin
+                        D1_seg <= seg0;
+                        D1_a <= 4'b1110;
+                    end
+            2'b01 : begin
+                        D1_seg <= seg1;
+                        D1_a <= 4'b1101;
+                    end
+            2'b10 : begin
+                        D1_seg <= seg2;
+                        D1_a <= 4'b1011;
+                    end
+            2'b11 : begin
+                        D1_seg = seg3;
+                        D1_seg[7] = 0;
+                        D1_a <= 4'b0111;
+                    end
+        endcase
+    end
+        else begin
+            count <= count + 1;
+        end
+end
 endmodule
 
 module binEncode(input [3:0] switch, output reg [7:0] segment);
