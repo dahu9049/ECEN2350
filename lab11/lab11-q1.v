@@ -1,7 +1,7 @@
-module ClkHexScroll(
+module msStopwatch(
     input mclk,
-    output reg [3:0] D0_a,
-    output reg [7:0] D0_seg
+    output reg [3:0] D1_a,
+    output reg [7:0] D1_seg
 );
 reg [26:0] count = 0;
 reg [2:0] digitSelect = 0;
@@ -19,35 +19,39 @@ always @(posedge mclk) begin
         digitSelect <= digitSelect + 1;
 
         digit0 <= digit0 + 1;
-        if(digit0 == 9) begin
+        if(digit0 == 10) begin
             digit0 <= 0;
             digit1 <= digit1 + 1;
         end
-        if(digit1 == 9) begin
+        if(digit1 == 10) begin
             digit1 <= 0;
             digit2 <= digit2 + 1;
             end
-        if(digit2 == 9) begin
+        if(digit2 == 10) begin
             digit2 <= 0;
             digit3 <= digit3 + 1;
         end
+        if(digit3 == 10) digit3 <= 0;
+
+        
 
         case(digitSelect)
             2'b00 : begin
-                        D0_seg = seg0;
-                        D0_a = 4'b1110;
+                        D1_seg = seg0;
+                        D1_a = 4'b1110;
                     end
             2'b01 : begin
-                        D0_seg = seg1;
-                        D0_a = 4'b1101;
+                        D1_seg = seg1;
+                        D1_a = 4'b1101;
                     end
             2'b10 : begin
-                        D0_seg = seg2;
-                        D0_a = 4'b1011;
+                        D1_seg = seg2;
+                        D1_a = 4'b1011;
                     end
             2'b11 : begin
-                        D0_seg = seg3;
-                        D0_a = 4'b0111;
+                        D1_seg = seg3;
+                        D1_seg[7] = 0;
+                        D1_a = 4'b0111;
                     end
         endcase
     end
