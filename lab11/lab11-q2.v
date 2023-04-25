@@ -40,11 +40,11 @@ always @(posedge mclk) begin //multiplexor
     end
 end
 
-always@(posedge btn[1])begin //pause
+always@(posedge btn[1])begin //pause on btn[1] press
     start <= ~start;
 end
 
-always@(posedge mclk) begin //counter and pause
+always@(posedge mclk) begin //counter
         if(count == 100000 - 1) count <= 0;
         else count <= count + 1;
 end
