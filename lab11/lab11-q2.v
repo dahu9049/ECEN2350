@@ -40,10 +40,13 @@ always @(posedge mclk) begin //multiplexor
     end
 end
 
-always@(posedge mclk or posedge btn[1]) begin //counter and pause
-    if(count == 100000 - 1) count <= 0;
-    else count <= count + 1;
-    if(!btn[1]) start <= ~start;
+always@(posedge btn[1])begin //pause
+    start <= ~start;
+end
+
+always@(posedge mclk) begin //counter and pause
+        if(count == 100000 - 1) count <= 0;
+        else count <= count + 1;
 end
 
 always@(posedge mclk or posedge btn[0]) begin //actual numbers increment 
